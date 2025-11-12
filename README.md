@@ -19,7 +19,7 @@
 ### Response (성공)
 ```json
 {
-   "scheduleId": 1,
+   "id": 1,
    "title": "testtitle",
    "nickname": "user1",
    "contents": "test",
@@ -40,7 +40,7 @@
 ```
 
 ## 2. 일정 조회 API
-- URL: GET /schedules/{id}
+- URL: GET /schedules/{scheduleId}
 - 설명: 일정 조회
 - 인증/인가: 없음
 - 데이터 형식: JSON
@@ -48,15 +48,26 @@
 ### Request
 ```GET /schedules/1```
 
-### Response
+### Response (성공)
 ```json
 {
-   "scheduleId": 1,
+   "id": 1,
    "title": "testtitle",
    "nickname": "user1",
    "contents": "test",
    "createdAt": "2025-11-09T13:30:26.937858",
    "modifiedAt": "2025-11-09T13:30:26.937858"
+}
+```
+
+### Response (실패)
+```json
+{
+  "timestamp": "2025-11-12T06:53:18.839+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "없는 일정입니다.",
+  "path": "/schedules/1"
 }
 ```
 
@@ -73,7 +84,7 @@
 ```json
 [
   {
-    "scheduleId": 2,
+    "id": 2,
     "title": "testtitle2",
     "nickname": "user2",
     "contents": "test",
@@ -81,7 +92,7 @@
     "modifiedAt": "2025-11-10T15:42:46.937858"
   },
   {
-    "scheduleId": 1,
+    "id": 1,
     "title": "testtitle",
     "nickname": "user1",
     "contents": "test",
@@ -92,7 +103,7 @@
 ```
 
 ## 4. 일정 수정 API
-- URL: PUT /schedules/{id}
+- URL: PUT /schedules/{scheduleId}
 - 설명: 일정 수정
 - 인증/인가: 없음
 - 데이터 형식: JSON
@@ -105,10 +116,10 @@
   "password": "1234"
 }
 ```
-### Response
+### Response (성공)
 ```json
 {
-   "scheduleId": 1,
+   "id": 1,
    "title": "modifiedtitle",
    "nickname": "user3",
    "contents": "test",
@@ -117,8 +128,28 @@
 }
 ```
 
+### Response (실패)
+```json
+{
+  "timestamp": "2025-11-12T06:47:22.454+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "없는 일정입니다.",
+  "path": "/schedules/1"
+}
+```
+```json
+{
+"timestamp": "2025-11-12T06:56:25.545+00:00",
+"status": 400,
+"error": "Bad Request",
+"message": "비밀번호를 다시 입력해주세요.",
+"path": "/schedules/2"
+}
+```
+
 ## 5. 일정 삭제 API
-- URL: DELETE /schedules/{id}
+- URL: DELETE /schedules/{scheduleId}
 - 설명: 일정 삭제
 - 인증/인가: 없음
 - 데이터 형식: JSON
@@ -130,10 +161,30 @@
 }
 ```
 
-### Response
+### Response (성공)
 ```json
 {
   (없음)
+}
+```
+
+### Response (실패)
+```json
+{
+  "timestamp": "2025-11-12T06:58:10.669+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "없는 일정입니다.",
+  "path": "/schedules/1"
+}
+```
+```json
+{
+"timestamp": "2025-11-12T06:58:41.793+00:00",
+"status": 400,
+"error": "Bad Request",
+"message": "비밀번호를 다시 입력해주세요.",
+"path": "/schedules/2"
 }
 ```
 
