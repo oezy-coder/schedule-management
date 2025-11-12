@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
@@ -46,5 +49,40 @@ public class ScheduleService {
                 savedSchedule.getCreatedAt(),
                 savedSchedule.getModifiedAt()
         );
+    }
+
+    // 일정 단건 조회
+    @Transactional(readOnly = true)
+    public GetScheduleResponse findOne(Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("없는 일정입니다."));
+        return new GetScheduleResponse(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getNickname(),
+                schedule.getContents(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
+        );
+    }
+
+    // 일정 전체 조회
+    @Transactional(readOnly = true)
+    public List<GetScheduleResponse> findAll() {
+        List<Schedule> schedules = scheduleRepository.findAllByOrderByModifiedAtDesc();
+
+        List<GetScheduleResponse> dtos = new ArrayList<>();
+        for (Schedule schedule : schedules) {
+            GetScheduleResponse dto = new GetScheduleResponse(
+                    schedule.getId(),
+                    schedule.getTitle(),
+                    schedule.getNickname(),
+                    schedule.getContents(),
+                    schedule.getCreatedAt(),
+                    schedule.getModifiedAt()
+            );
+            dtos.add(dto);
+        }
+        return dtos;
     }
 }
