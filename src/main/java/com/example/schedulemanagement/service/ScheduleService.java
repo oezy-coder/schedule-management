@@ -114,4 +114,20 @@ public class ScheduleService {
                 schedule.getModifiedAt()
         );
     }
+
+    // 일정 삭제
+    @Transactional
+    public void delete(Long scheduleId, DeleteScheduleRequest request) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("없는 일정입니다."));
+
+        // 비밀번호 검증
+        if (!schedule.getPassword().equals(request.getPassword())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "비밀번호를 다시 입력해주세요."
+            );
+        }
+        scheduleRepository.deleteById(scheduleId);
+    }
 }
