@@ -32,4 +32,13 @@ public class ScheduleController {
     public ResponseEntity<List<GetScheduleResponse>> getSchedules() {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAll());
     }
+
+    // 일정 수정
+    @PutMapping("/schedules/{scheduleId}")
+    public ResponseEntity<UpdateScheduleResponse> updateSchedule(
+            @PathVariable Long scheduleId,
+            @RequestBody UpdateScheduleRequest request
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(scheduleId, request));
+    }
 }

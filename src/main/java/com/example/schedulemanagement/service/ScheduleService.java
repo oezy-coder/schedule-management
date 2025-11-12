@@ -85,4 +85,33 @@ public class ScheduleService {
         }
         return dtos;
     }
+
+    // 일정 수정
+    @Transactional
+    public UpdateScheduleResponse update(Long scheduleId, UpdateScheduleRequest request) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("없는 일정입니다."));
+
+        // 비밀번호 검증
+        if (!schedule.getPassword().equals(request.getPassword())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "비밀번호를 다시 입력해주세요."
+            );
+        }
+
+        schedule.updateSchedule(
+                request.getTitle(),
+                request.getNickname()
+        );
+        scheduleRepository.flush();
+        return new UpdateScheduleResponse(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getNickname(),
+                schedule.getContents(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
+        );
+    }
 }
